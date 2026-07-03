@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — Surprise Site 💜</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="loginScreen" class="admin-login">
+  <div class="login-card">
+    <span class="login-icon">🔮</span>
+    <h1 class="login-title">Admin Panel</h1>
+    <p class="login-subtitle">Enter your password to continue</p>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <input
+        type="password"
+        id="passwordInput"
+        class="admin-input"
+        placeholder="🔑 Enter password..."
+        autocomplete="current-password"
+      />
+      <button type="submit" class="admin-btn">
+        ✨ Enter Panel
+      </button>
+    </form>
+
+    <p class="login-error" id="loginError">❌ Incorrect password. Try again.</p>
+    <p style="margin-top: 16px; font-size: 0.75rem; color: var(--admin-text-muted);">
+      Default password: <code style="background:rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">admin123</code>
+    </p>
+  </div>
+</div>
+
+<!-- ============ ADMIN PANEL ============ -->
+<div id="adminPanel" class="admin-panel">
+
+  <!-- Mobile menu button -->
+  <button class="mobile-menu-btn" onclick="toggleSidebar()" title="Menu">☰</button>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">💜 SurpriseAdmin</div>
+      <p class="sidebar-subtitle">Control everything with love</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <p class="nav-section-title">Overview</p>
+        <button class="nav-item active" onclick="showSection('site', this)">
+          <span class="nav-icon">🌐</span> Site Control
+        </button>
+        <button class="nav-item" onclick="showSection('landing', this)">
+          <span class="nav-icon">🏠</span> Landing Page
+        </button>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-section-title">Content</p>
+        <button class="nav-item" onclick="showSection('game', this)">
+          <span class="nav-icon">🎮</span> Game Settings
+        </button>
+        <button class="nav-item" onclick="showSection('apology', this)">
+          <span class="nav-icon">💌</span> Apology Letter
+        </button>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-section-title">Appearance</p>
+        <button class="nav-item" onclick="showSection('theme', this)">
+          <span class="nav-icon">🎨</span> Theme & Colors
+        </button>
+        <button class="nav-item" onclick="showSection('music', this)">
+          <span class="nav-icon">🎵</span> Music Settings
+        </button>
+        <button class="nav-item" onclick="showSection('media', this)">
+          <span class="nav-icon">🖼️</span> Media & Uploads
+        </button>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-section-title">Security</p>
+        <button class="nav-item" onclick="showSection('security', this)">
+          <span class="nav-icon">🔐</span> Password
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="site-status-indicator">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Active</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main" id="adminMain">
+
+    <div class="admin-topbar">
+      <h2 class="topbar-title" id="topbarTitle">🌐 Site Control</h2>
+      <div class="topbar-actions">
+        <span class="save-badge" id="saveBadge">✓ Saved!</span>
+        <a href="index.html" target="_blank" class="preview-link">👁️ Preview Site</a>
+        <button class="admin-btn btn-sm" onclick="saveAllSettings()">💾 Save All</button>
+        <button class="admin-btn btn-sm btn-danger" onclick="handleLogout()">🚪 Logout</button>
+      </div>
+    </div>
+
+    <!-- ===== SITE CONTROL SECTION ===== -->
+    <section id="section-site" class="admin-section active">
+      <div class="admin-card">
+        <h3 class="card-title">🌐 Website Status</h3>
+        <p class="card-desc">Control who can see your surprise website. Set it to Private while you're still preparing!</p>
+
+        <div class="status-radio-group">
+          <div class="status-radio">
+            <input type="radio" name="siteStatus" id="status-active" value="ACTIVE">
+            <label for="status-active">
+              <span class="radio-icon">🟢</span>
+              <strong>Active</strong>
+              <small>Visible to everyone</small>
+            </label>
+          </div>
+          <div class="status-radio">
+            <input type="radio" name="siteStatus" id="status-private" value="PRIVATE">
+            <label for="status-private">
+              <span class="radio-icon">🔒</span>
+              <strong>Private</strong>
+              <small>Shows a waiting message</small>
+            </label>
+          </div>
+          <div class="status-radio">
+            <input type="radio" name="siteStatus" id="status-maintenance" value="MAINTENANCE">
+            <label for="status-maintenance">
+              <span class="radio-icon">🔧</span>
+              <strong>Maintenance</strong>
+              <small>Shows maintenance message</small>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3 class="card-title">📝 Status Messages</h3>
+        <p class="card-desc">Customize the messages shown when the site is Private or in Maintenance.</p>
+
+        <div class="form-group">
+          <label class="form-label">Private Message</label>
+          <input type="text" id="privateMsg" class="form-input" placeholder="This surprise isn't ready yet ❤️" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Maintenance Message</label>
+          <input type="text" id="maintenanceMsg" class="form-input" placeholder="We're sprinkling some extra magic... be back soon! ✨" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== LANDING SECTION ===== -->
+    <section id="section-landing" class="admin-section">
+      <div class="admin-card">
+        <h3 class="card-title">🏠 Landing Page Text</h3>
+        <p class="card-desc">Edit the text displayed on the opening screen.</p>
+
+        <div class="form-group">
+          <label class="form-label">Greeting Text</label>
+          <input type="text" id="landingGreeting" class="form-input" placeholder="Hi ❤️" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subtitle Text</label>
+          <input type="text" id="landingSubtitle" class="form-input" placeholder="Someone has a little surprise waiting for you." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Button Text</label>
+          <input type="text" id="landingButton" class="form-input" placeholder="Open My Heart 💖" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GAME SECTION ===== -->
+    <section id="section-game" class="admin-section">
+      <div class="admin-card">
+        <h3 class="card-title">🎮 Game Configuration</h3>
+        <p class="card-desc">Configure the heart-catching game mechanics.</p>
+
+        <div class="form-group">
+          <div class="toggle-wrap">
+            <label class="toggle-switch">
+              <input type="checkbox" id="gameEnabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Enable Game (skip if disabled)</span>
+          </div>
+        </div>
+
+        <div class="admin-grid">
+          <div class="form-group">
+            <label class="form-label">Hearts Required to Win</label>
+            <div style="display:flex; align-items:center; gap: 12px;">
+              <input type="range" class="form-range" id="requiredHearts" min="5" max="50" value="20"
+                oninput="document.getElementById('heartsVal').textContent = this.value">
+              <span class="range-value" id="heartsVal">20</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Countdown Time (seconds)</label>
+            <div style="display:flex; align-items:center; gap: 12px;">
+              <input type="range" class="form-range" id="countdownTime" min="15" max="120" value="30"
+                oninput="document.getElementById('timerVal').textContent = this.value">
+              <span class="range-value" id="timerVal">30</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Difficulty</label>
+          <select id="gameDifficulty" class="form-select">
+            <option value="easy">🐣 Easy — Hearts fall slowly</option>
+            <option value="normal" selected>🎀 Normal — Balanced</option>
+            <option value="hard">🔥 Hard — Hearts fall fast</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== APOLOGY SECTION ===== -->
+    <section id="section-apology" class="admin-section">
+      <div class="admin-card">
+        <h3 class="card-title">💌 Apology Letter</h3>
+        <p class="card-desc">Personalize the heartfelt message shown after the game.</p>
+
+        <div class="form-group">
+          <label class="form-label">Her Name</label>
+          <input type="text" id="girlfriendName" class="form-input" placeholder="Sweetheart" />
+          <p style="font-size:0.8rem; color: var(--admin-text-muted); margin-top: 6px;">
+            This appears as "Dear [Name], ❤️"
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Apology Message</label>
+          <textarea id="apologyMessage" class="form-textarea" rows="10"
+            placeholder="I know I hurt you..."></textarea>
+          <p style="font-size:0.8rem; color: var(--admin-text-muted); margin-top: 6px;">
+            Use blank lines between paragraphs. The text will be typed out letter by letter.
+          </p>
+        </div>
+
+        <div class="admin-grid">
+          <div class="form-group">
+            <label class="form-label">Yes Response Message</label>
+            <input type="text" id="finalYes" class="form-input" placeholder="You just made me the happiest person ❤️" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">"I Need More Time" Message</label>
+            <textarea id="finalWait" class="form-textarea" rows="4"
+              placeholder="That's okay. I'll wait. Because you're worth waiting for."></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THEME SECTION ===== -->
+    <section id="section-theme" class="admin-section">
+      <div class="admin-card">
+        <h3 class="card-title">🎨 Theme Settings</h3>
+        <p class="card-desc">Customize the color palette and appearance of the website.</p>
+
+        <div class="form-group">
+          <label class="form-label">Default Mode</label>
+          <select id="themeMode" class="form-select">
+            <option value="light">☀️ Light Mode</option>
+            <option value="dark">🌙 Dark Mode</option>
+          </select>
+        </div>
+
+        <div class="admin-grid">
+          <div class="form-group">
+            <label class="form-label">Primary Color (Buttons, Accents)</label>
+            <div class="color-input-wrap">
+              <input type="color" id="colorPrimary" class="color-swatch" value="#FF85A1" />
+              <input type="text" id="colorPrimaryHex" class="form-input" value="#FF85A1"
+                oninput="syncColor('colorPrimary', this.value)" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Secondary Color (Particles, Highlights)</label>
+            <div class="color-input-wrap">
+              <input type="color" id="colorSecondary" class="color-swatch" value="#C9B1FF" />
+              <input type="text" id="colorSecondaryHex" class="form-input" value="#C9B1FF"
+                oninput="syncColor('colorSecondary', this.value)" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Background Color</label>
+            <div class="color-input-wrap">
+              <input type="color" id="colorBackground" class="color-swatch" value="#FFF5F7" />
+              <input type="text" id="colorBackgroundHex" class="form-input" value="#FFF5F7"
+                oninput="syncColor('colorBackground', this.value)" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Text Color</label>
+            <div class="color-input-wrap">
+              <input type="color" id="colorText" class="color-swatch" value="#5C3D5E" />
+              <input type="text" id="colorTextHex" class="form-input" value="#5C3D5E"
+                oninput="syncColor('colorText', this.value)" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3 class="card-title">🖼️ Background Image URL</h3>
+        <p class="card-desc">Optional. Enter a direct URL to an image to use as the page background.</p>
+        <div class="form-group">
+          <input type="url" id="bgImageUrl" class="form-input" placeholder="https://example.com/image.jpg" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MUSIC SECTION ===== -->
+    <section id="section-music" class="admin-section">
+      <div class="admin-card">
+        <h3 class="card-title">🎵 Music Settings</h3>
+        <p class="card-desc">Control background music behavior.</p>
+
+        <div class="form-group">
+          <div class="toggle-wrap">
+            <label class="toggle-switch">
+              <input type="checkbox" id="musicEnabled" checked>
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Enable Music Controls</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 16px;">
+          <div class="toggle-wrap">
+            <label class="toggle-switch">
+              <input type="checkbox" id="musicAutoPlay">
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Auto-Play Music on Load</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+          <label class="form-label">Custom Music URL</label>
+          <input type="url" id="musicUrl" class="form-input" placeholder="assets/music/background.mp3 or https://..." />
+          <p style="font-size:0.8rem; color: var(--admin-text-muted); margin-top: 6px;">
+            Supports MP3, OGG, WAV formats. Use a direct URL or relative path.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MEDIA SECTION ===== -->
+    <section id="section-media" class="admin-section">
+      <div class="admin-card">
+        <h3 class="card-title">🎵 Upload Background Music</h3>
+        <p class="card-desc">Upload an MP3 file. Note: File will be saved to browser storage (base64). For large files, use a URL instead.</p>
+
+        <div class="file-upload-area" id="musicUploadArea">
+          <input type="file" id="musicFileInput" accept="audio/*" onchange="handleMusicUpload(event)" />
+          <div class="upload-icon">🎶</div>
+          <p class="upload-text">Click or drag an audio file here<br><small>MP3, OGG, WAV supported</small></p>
+        </div>
+        <div class="uploaded-files" id="uploadedMusic"></div>
+      </div>
+
+      <div class="admin-card">
+        <h3 class="card-title">🖼️ Upload Images / GIFs</h3>
+        <p class="card-desc">Upload images or GIFs to use in the website. Copy the generated data URL to use in theme settings.</p>
+
+        <div class="file-upload-area" id="imageUploadArea">
+          <input type="file" id="imageFileInput" accept="image/*" multiple onchange="handleImageUpload(event)" />
+          <div class="upload-icon">🌸</div>
+          <p class="upload-text">Click or drag image files here<br><small>PNG, JPG, GIF supported</small></p>
+        </div>
+        <div class="uploaded-files" id="uploadedImages"></div>
+
+        <!-- Image preview grid -->
+        <div id="imagePreviewGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 16px;"></div>
+      </div>
+
+      <div class="admin-card">
+        <h3 class="card-title">📋 How to Deploy</h3>
+        <p class="card-desc">Steps to deploy your surprise website:</p>
+        <div style="line-height: 2; font-size: 0.9rem;">
+          <p>🟣 <strong>Vercel:</strong> Drag the project folder to <a href="https://vercel.com/new" target="_blank" style="color: var(--admin-primary);">vercel.com/new</a></p>
+          <p>🟢 <strong>Netlify:</strong> Drag the folder to <a href="https://app.netlify.com/drop" target="_blank" style="color: var(--admin-primary);">app.netlify.com/drop</a></p>
+          <p>⚫ <strong>GitHub Pages:</strong> Push to GitHub, enable Pages in Settings → Pages → Deploy from branch</p>
+          <p>📁 <strong>Local:</strong> Open <code style="background:rgba(255,255,255,0.1); padding: 2px 6px; border-radius:4px;">index.html</code> in any browser</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SECURITY SECTION ===== -->
+    <section id="section-security" class="admin-section">
+      <div class="admin-card">
+        <h3 class="card-title">🔐 Change Admin Password</h3>
+        <p class="card-desc">Update your admin panel password. Make sure to remember it!</p>
+
+        <div class="form-group">
+          <label class="form-label">Current Password</label>
+          <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input type="password" id="newPassword" class="form-input" placeholder="Enter new password" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm New Password</label>
+          <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password" />
+        </div>
+        <button class="admin-btn" onclick="changePassword()" style="max-width: 240px;">
+          🔑 Change Password
+        </button>
+        <p id="passwordMsg" style="margin-top: 12px; font-size: 0.9rem;"></p>
+      </div>
+
+      <div class="admin-card">
+        <h3 class="card-title">🗑️ Reset to Defaults</h3>
+        <p class="card-desc">Clear all local customizations and revert to the original config.json settings.</p>
+        <button class="admin-btn btn-danger" onclick="resetToDefaults()" style="max-width: 240px;">
+          ⚠️ Reset All Settings
+        </button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Toast Container -->
+<div class="admin-toast" id="toastContainer"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

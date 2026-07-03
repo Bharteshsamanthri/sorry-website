@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Little Surprise For You 💖</title>
+  <meta name="description" content="A magical, heartfelt surprise just for you." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Pacifico&family=Nunito:wght@300;400;600;700&family=Sacramento&display=swap" rel="stylesheet">
+
+  <!-- tsParticles -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/TextPlugin.min.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-light" id="mainBody">
+
+  <!-- Custom Cursor -->
+  <div id="cursor" class="cursor"></div>
+  <div id="cursorTrail" class="cursor-trail"></div>
+
+  <!-- Cute Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-bear">🧸</div>
+      <div class="loading-hearts">
+        <span class="lh">💕</span>
+        <span class="lh">💖</span>
+        <span class="lh">💗</span>
+        <span class="lh">💓</span>
+        <span class="lh">💝</span>
+      </div>
+      <p class="loading-text">Sprinkling some magic...</p>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar" id="loadingBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Private / Maintenance Screen -->
+  <div id="privateScreen" class="private-screen" style="display:none;">
+    <div class="private-content">
+      <div class="private-icon">🔒</div>
+      <h1 id="privateMsg" class="private-title"></h1>
+      <div class="floating-petals-bg"></div>
+    </div>
+  </div>
+
+  <!-- Music Player Bar -->
+  <div id="musicBar" class="music-bar" style="display:none;">
+    <button id="musicToggle" class="music-btn" title="Toggle Music">
+      <span id="musicIcon">🎵</span>
+    </button>
+    <div class="music-note note1">♪</div>
+    <div class="music-note note2">♫</div>
+    <div class="music-note note3">♩</div>
+  </div>
+
+  <!-- Theme Toggle -->
+  <button id="themeToggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode" style="display:none;">
+    <span id="themeIcon">🌙</span>
+  </button>
+
+  <!-- ================= LANDING SCREEN ================= -->
+  <section id="landingScreen" class="screen landing-screen" style="display:none;">
+    <div class="clouds-container">
+      <div class="cloud cloud1">☁️</div>
+      <div class="cloud cloud2">☁️</div>
+      <div class="cloud cloud3">⛅</div>
+    </div>
+
+    <div class="landing-content">
+      <div class="landing-sparkles">
+        <span class="sparkle s1">✨</span>
+        <span class="sparkle s2">⭐</span>
+        <span class="sparkle s3">🌟</span>
+        <span class="sparkle s4">✨</span>
+        <span class="sparkle s5">💫</span>
+      </div>
+
+      <div class="landing-bear-wrap">
+        <div class="landing-bear" id="landingBear">🧸</div>
+        <div class="bear-hearts">
+          <span>💕</span><span>💖</span><span>💗</span>
+        </div>
+      </div>
+
+      <h1 id="landingGreeting" class="landing-greeting"></h1>
+      <p id="landingSubtitle" class="landing-subtitle"></p>
+
+      <button id="openHeartBtn" class="heart-btn btn-pulse" onclick="startGame()">
+        <span class="btn-heart">💖</span>
+        <span id="landingBtnText">Open My Heart 💖</span>
+        <div class="btn-ripple"></div>
+      </button>
+
+      <div class="landing-flowers">
+        <span class="flower f1">🌸</span>
+        <span class="flower f2">🌺</span>
+        <span class="flower f3">🌷</span>
+        <span class="flower f4">🌸</span>
+        <span class="flower f5">💐</span>
+        <span class="flower f6">🌹</span>
+      </div>
+    </div>
+
+    <!-- Floating hearts background -->
+    <div class="floating-hearts-bg" id="floatingHeartsBg"></div>
+  </section>
+
+  <!-- ================= GAME SCREEN ================= -->
+  <section id="gameScreen" class="screen game-screen" style="display:none;">
+    <div class="game-header">
+      <div class="game-stat">
+        <span class="stat-icon">💖</span>
+        <span id="heartCount">0</span>/<span id="heartRequired">20</span>
+      </div>
+      <div class="game-title-wrap">
+        <h2 class="game-title">Catch My Love</h2>
+      </div>
+      <div class="game-stat">
+        <span class="stat-icon">⏰</span>
+        <span id="timerDisplay">30</span>s
+      </div>
+    </div>
+
+    <div class="game-area" id="gameArea">
+      <div id="basket" class="basket">
+        <div class="basket-bear">🧸</div>
+        <div class="basket-glow"></div>
+      </div>
+    </div>
+
+    <div id="gameOverlay" class="game-overlay" style="display:none;">
+      <div class="game-overlay-content">
+        <div id="overlayIcon" class="overlay-icon">💔</div>
+        <h2 id="overlayTitle" class="overlay-title">Time's Up!</h2>
+        <p id="overlayMsg" class="overlay-msg"></p>
+        <button id="overlayBtn" class="heart-btn" onclick="restartGame()">
+          Try Again 💕
+        </button>
+      </div>
+    </div>
+
+    <div class="game-instructions">
+      <p>🎮 Move your mouse or touch screen to catch the falling hearts!</p>
+    </div>
+  </section>
+
+  <!-- ================= APOLOGY SCREEN ================= -->
+  <section id="apologyScreen" class="screen apology-screen" style="display:none;">
+    <div class="letter-container">
+      <div class="letter-decoration top-deco">
+        <span>🌸</span><span>✨</span><span>💖</span><span>✨</span><span>🌸</span>
+      </div>
+
+      <div class="letter-paper">
+        <div class="letter-header">
+          <div class="letter-stamp">💌</div>
+          <div class="letter-lines"></div>
+        </div>
+
+        <div class="letter-body">
+          <h2 id="letterSalutation" class="letter-salutation"></h2>
+          <div id="letterMessage" class="letter-message"></div>
+        </div>
+
+        <div class="letter-footer">
+          <p class="letter-sign">with all my heart,</p>
+          <p class="letter-sign-name">Someone who cares 💕</p>
+        </div>
+      </div>
+
+      <div class="letter-decoration bot-deco">
+        <span>🌙</span><span>⭐</span><span>🌸</span><span>⭐</span><span>🌙</span>
+      </div>
+
+      <div id="forgiveButtons" class="forgive-buttons" style="display:none;">
+        <button class="heart-btn forgive-yes" id="yesBtn" onclick="handleYes()">
+          YES 💕
+        </button>
+        <button class="heart-btn forgive-wait" id="waitBtn" onclick="handleWait()">
+          I Need More Time 🥺
+        </button>
+      </div>
+    </div>
+
+    <!-- Stars background -->
+    <div class="stars-bg" id="starsBg"></div>
+  </section>
+
+  <!-- ================= RESPONSE SCREENS ================= -->
+  <section id="yesScreen" class="screen yes-screen" style="display:none;">
+    <div class="yes-content">
+      <div class="yes-heart-big" id="yesBigHeart">💖</div>
+      <h1 id="yesMessage" class="yes-message"></h1>
+      <div class="yes-flowers">
+        <span>🌸</span><span>🌺</span><span>🌹</span><span>🌷</span><span>💐</span>
+      </div>
+      <div class="yes-stars">
+        <span>⭐</span><span>🌟</span><span>✨</span><span>💫</span><span>🌟</span>
+      </div>
+      <div class="fireworks-container" id="fireworksContainer"></div>
+    </div>
+  </section>
+
+  <section id="waitScreen" class="screen wait-screen" style="display:none;">
+    <div class="wait-content">
+      <div class="wait-icon">🥺</div>
+      <div class="wait-message-box">
+        <p id="waitMessage" class="wait-message"></p>
+      </div>
+      <div class="wait-bear">🧸</div>
+      <div class="wait-hearts">
+        <span>💕</span><span>💗</span><span>💓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hidden: tsparticles container -->
+  <div id="tsparticles" class="particles-layer"></div>
+
+  <!-- Audio Elements -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/music/background.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="winMusic" preload="auto">
+    <source src="assets/music/win.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Sound effects via Web Audio API (generated) -->
+
+  <script src="script.js"></script>
+</body>
+</html>

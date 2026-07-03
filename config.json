@@ -1,0 +1,42 @@
+{
+  "site": {
+    "status": "ACTIVE",
+    "privateMessage": "This surprise isn't ready yet ❤️",
+    "maintenanceMessage": "We're sprinkling some extra magic... be back soon! ✨"
+  },
+  "landing": {
+    "greeting": "Hi ❤️",
+    "subtitle": "Someone has a little surprise waiting for you.",
+    "buttonText": "Open My Heart 💖"
+  },
+  "game": {
+    "enabled": true,
+    "type": "catch",
+    "requiredHearts": 20,
+    "countdownTime": 30,
+    "difficulty": "normal"
+  },
+  "apology": {
+    "girlfriendName": "Sweetheart",
+    "message": "I know I hurt you.\n\nIf I could go back and change that moment, I would.\n\nYou deserve laughter, peace, and all the love in the world.\n\nThank you for being patient with someone who's still learning.\n\nI'm truly sorry.\n\nNo matter what happens, you'll always be someone incredibly special to me.\n\nI hope this little surprise made you smile even just a little.\n\nWill you forgive me? ❤️",
+    "finalYes": "You just made me the happiest person ❤️",
+    "finalWait": "That's okay.\n\nI'll wait.\n\nBecause you're worth waiting for."
+  },
+  "music": {
+    "enabled": true,
+    "autoPlay": false,
+    "defaultTrack": "assets/music/background.mp3"
+  },
+  "theme": {
+    "mode": "light",
+    "primary": "#FF85A1",
+    "secondary": "#C9B1FF",
+    "accent": "#FFD6E0",
+    "background": "#FFF5F7",
+    "text": "#5C3D5E",
+    "backgroundImage": ""
+  },
+  "admin": {
+    "passwordHash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"
+  }
+}
